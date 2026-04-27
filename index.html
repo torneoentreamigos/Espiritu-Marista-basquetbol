@@ -556,7 +556,7 @@ footer{
         <li><b>Grupos Azul con bloques</b> (Micro Azul, Mini Azul): se organizan en Bloque 1 (B1) y Bloque 2 (B2) con cruces entre bloques. <b>Final Oro:</b> 1° de B1 vs 1° de B2. <b>Final Plata:</b> 2° de B1 vs 2° de B2. <b>Final Bronce:</b> 3° de B1 vs 3° de B2.</li>
       </ul>
       <h3 style="margin-top:18px">🏅 Criterios de desempate</h3>
-      <ol style="margin-left:20px;color:var(--gray-dark);font-size:14px;line-height:1.7">
+      <ol style="margin-left:20px;color:#ffffff;font-size:14px;line-height:1.7">
         <li>Mayor número de puntos.</li>
         <li>Mayor número de victorias con equipo completo (mín. 10 jugadores).</li>
         <li>Mayor diferencia de puntos (anotados − recibidos).</li>
@@ -1170,8 +1170,8 @@ function drawCats(stand, filter){
           ${teams.map((t,i)=>{
             const cls = i===0?"pos-1":(i===1?"pos-2":(i===2?"pos-3":""));
             const numCls = i===0?"gold":(i===1?"silv":(i===2?"bron":""));
-            const isAutoBronce = isChupones && i===4; // 5° lugar de Chupones
-            const tag = isAutoBronce ? ' <span style="background:var(--bronze);color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px">BRONCE AUTO</span>' : '';
+            const isAutoBronce = false; // eliminado bronce automatico
+            const tag = "";
             const dif = t.PF - t.PC;
             const difStr = dif > 0 ? "+"+dif : ""+dif;
             return `<tr class="${cls}${isAutoBronce?' pos-bronze-auto':''}">
