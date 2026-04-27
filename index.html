@@ -616,7 +616,7 @@ footer{
     </div>
     <div class="footer-col">
       <h4>Contacto</h4>
-      <p>Arq. Jorge Antonio Lechuga Núñez<br>📞 9991 296744<br>✉️ <a href="mailto:torneoespiritumarista@gmail.com">torneoespiritumarista@gmail.com</a></p>
+      <p>✉️ <a href="mailto:torneoespiritumarista@gmail.com">torneoespiritumarista@gmail.com</a></p>
     </div>
     <div class="footer-col">
       <h4>Sedes</h4>
@@ -1170,8 +1170,8 @@ function drawCats(stand, filter){
           ${teams.map((t,i)=>{
             const cls = i===0?"pos-1":(i===1?"pos-2":(i===2?"pos-3":""));
             const numCls = i===0?"gold":(i===1?"silv":(i===2?"bron":""));
-            const isAutoBronce = false;
-            const tag = '';
+            const isAutoBronce = isChupones && i===4; // 5° lugar de Chupones
+            const tag = isAutoBronce ? ' <span style="background:var(--bronze);color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px">BRONCE AUTO</span>' : '';
             const dif = t.PF - t.PC;
             const difStr = dif > 0 ? "+"+dif : ""+dif;
             return `<tr class="${cls}${isAutoBronce?' pos-bronze-auto':''}">
