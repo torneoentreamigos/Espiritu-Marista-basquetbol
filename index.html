@@ -332,10 +332,44 @@ section:nth-child(even){background:#fff}
 }
 
 /* ===== FINALES ===== */
-.finals-grid{
+.finals-grid{display:flex;flex-direction:column;gap:18px}
+.finals-grid-inner{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
   gap:24px;
 }
+.auth-banner{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:18px 22px;border-radius:14px;
+  background:#fff;box-shadow:var(--shadow);
+  border-left:6px solid var(--gold);
+}
+.auth-banner span{font-size:28px;line-height:1}
+.auth-banner b{display:block;font-family:'Oswald';font-size:18px;color:var(--blue);letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px}
+.auth-banner small{color:var(--gray);font-size:13px;line-height:1.4}
+.auth-banner.lock{border-left-color:var(--red);background:linear-gradient(135deg,#fff,#FEF6F6)}
+.auth-banner.lock b{color:var(--red)}
+.auth-banner.ok{border-left-color:#10B981;background:linear-gradient(135deg,#fff,#F0FDF4)}
+.auth-banner.ok b{color:#047857}
+.auth-banner.partial{border-left-color:var(--gold);background:linear-gradient(135deg,#fff,#FFFBEA)}
+.auth-banner.partial b{color:#92500A}
+.final-card.pending{opacity:.78}
+.final-card.pending .final-team{color:var(--gray)}
+.auth-pill{
+  display:inline-block;font-size:10px;font-weight:800;
+  padding:3px 9px;border-radius:50px;letter-spacing:1px;
+  text-transform:uppercase;margin-left:auto;
+}
+.auth-pill.ok{background:#D1FAE5;color:#047857}
+.auth-pill.pending{background:#FEE2E2;color:var(--red)}
+.override-tag{
+  display:inline-block;background:var(--blue);color:#fff;
+  font-size:10px;padding:1px 6px;border-radius:50px;margin-left:4px;
+  vertical-align:middle;
+}
+.final-card.auto{background:linear-gradient(135deg,#fff 0%, #FFF7E6 100%)}
+.final-match.auto{grid-template-columns:1fr;border-top:none;padding-top:8px}
+.pos-bronze-auto{background:linear-gradient(135deg,#FFF7E6 0%, transparent 80%)}
+.pos-bronze-auto td:first-child{font-weight:700}
 .final-card{
   background:#fff;border-radius:14px;
   padding:26px 22px;box-shadow:var(--shadow);
@@ -468,9 +502,10 @@ footer{
     <h1>Torneo de Basquetbol<br>Espíritu Marista 2026</h1>
     <p>
       ¡Bienvenidos a la primera edición del Torneo de Basquetbol Espíritu Marista!
-      Una fiesta deportiva donde compiten las categorías Chupones, Escuelita, Micro y Mini
-      en los grupos Rojo, Azul y Rosa. Aquí podrás consultar el sistema de puntuación,
-      las tablas de posiciones, el calendario completo y las finales.
+      Una fiesta deportiva donde compiten las categorías Chupones, Escuelita, Micro y Mini.
+      Chupones se juega en una sola categoría todos contra todos; el resto de las
+      categorías se dividen en grupos Rojo, Azul y Rosa. Aquí podrás consultar el sistema
+      de puntuación, las tablas de posiciones en vivo, el calendario completo y las finales.
     </p>
     <div class="hero-dates">
       📅 Del lunes 27 de abril al sábado 9 de mayo de 2026
@@ -516,9 +551,18 @@ footer{
     <div class="note-card">
       <h3>📋 Formato por Categoría</h3>
       <ul>
-        <li><b>Grupos de 4 equipos</b> (Chupones, Escuelita Rojo/Azul, Micro Rojo/Rosa, Mini Rojo): formato <i>round robin</i> (todos contra todos). <b>Final Oro:</b> 1° vs 2°. <b>Final Plata:</b> 3° vs 4°.</li>
+        <li><b>Chupones (5 equipos, categoría única):</b> todos contra todos. <b>Final Oro:</b> 1° vs 2°. <b>Final Plata:</b> 3° vs 4°. <b>Bronce:</b> el 5° lugar obtiene su trofeo de Campeón Bronce <i>directo, sin partido</i>. Resultado: 3 campeones (Oro, Plata, Bronce) y 2 subcampeones.</li>
+        <li><b>Grupos de 4 equipos</b> (Escuelita Rojo/Azul, Micro Rojo/Rosa, Mini Rojo): formato <i>round robin</i> (todos contra todos). <b>Final Oro:</b> 1° vs 2°. <b>Final Plata:</b> 3° vs 4°.</li>
         <li><b>Grupos Azul con bloques</b> (Micro Azul, Mini Azul): se organizan en Bloque 1 (B1) y Bloque 2 (B2) con cruces entre bloques. <b>Final Oro:</b> 1° de B1 vs 1° de B2. <b>Final Plata:</b> 2° de B1 vs 2° de B2. <b>Final Bronce:</b> 3° de B1 vs 3° de B2.</li>
       </ul>
+      <h3 style="margin-top:18px">🏅 Criterios de desempate</h3>
+      <ol style="margin-left:20px;color:var(--gray-dark);font-size:14px;line-height:1.7">
+        <li>Mayor número de puntos.</li>
+        <li>Mayor número de victorias con equipo completo (mín. 10 jugadores).</li>
+        <li>Mayor diferencia de puntos (anotados − recibidos).</li>
+        <li>Resultado directo entre los equipos involucrados.</li>
+        <li>Si persiste el empate: menor número de faltas, faltas técnicas y, en último caso, volado (resolución del comité).</li>
+      </ol>
     </div>
   </div>
 </section>
@@ -556,7 +600,8 @@ footer{
   <div class="container">
     <div class="section-header">
       <h2>Finales</h2>
-      <p>Sábado 9 de mayo — Finales Oro 🥇, Plata 🥈 y Bronce 🥉 por categoría</p>
+      <p>Sábado 9 de mayo — Finales Oro 🥇, Plata 🥈 y Bronce 🥉 por categoría<br>
+      <small style="color:var(--gray);font-size:13px">Los equipos clasificados se publican una vez que el comité organizador autoriza la difusión.</small></p>
     </div>
     <div class="finals-grid" id="finalesContent"></div>
   </div>
@@ -599,9 +644,14 @@ footer{
    ========================================================================= */
 const CONFIG = {
   // Pega aquí el ID de tu hoja de Google Sheets (la cadena larga entre /d/ y /edit)
-  SPREADSHEET_ID: "1xkKDkRK5so1Dhc0EmynDM0XXN6KCGhYxBO2kGTDx6Ow",
+  SPREADSHEET_ID: "1h-I2bK_wwrjCmsa7yX0Fbce-flWinYHPJLvly-PWsYo",
   // Pega aquí el GID de la pestaña 'Resultados' (lo verás en la URL después de #gid=)
-  GID_RESULTADOS: "1858259860"
+  GID_RESULTADOS: "1975031339",
+  // Pega aquí el GID de la pestaña 'Finales' (controla overrides y publicación POR FINAL)
+  GID_FINALES: "1673680658",
+  // Palabra que el comité escribe en la columna 'Autorizar publicación' para revelar
+  // cada final individualmente. Cada final tiene su propia celda de autorización.
+  PALABRA_AUTORIZACION: "AUTORIZADO"
 };
 /* =========================================================================
    DATOS ESTÁTICOS DEL TORNEO
@@ -609,8 +659,8 @@ const CONFIG = {
    ========================================================================= */
 
 const EQUIPOS = {
-  "Chupones-Rojo":   ["Colegio Montejo 20-21 A","Rayos All Stars","Rogers Hall"],
-  "Chupones-Azul":   ["Colegio Montejo 20-21 B","Escuela Modelo","CEL"],
+  // Chupones unificada: 5 equipos todos contra todos. 5° lugar = Bronce automático.
+  "Chupones":        ["Colegio Montejo 20-21 A","Colegio Montejo 20-21 B","Rogers Hall","Escuela Modelo","CEL"],
   "Escuelita-Rojo":  ["Colegio Montejo 18 A","Rayos All Stars","Rogers Hall","Cumbres"],
   "Escuelita-Azul":  ["Colegio Montejo 18-19","Escuela Modelo","Club Raptors","CEL"],
   "Micro-Rojo":      ["Colegio Montejo 16 A","Rogers Hall","Club Wildcats","Club Hormigas"],
@@ -635,14 +685,14 @@ const ALIAS = {
   "Mini|Rojo|CM (Jorge)": "Colegio Montejo 14 A",
   "Mini|Azul|CM (David)": "Colegio Montejo 15 A",
   "Mini|Azul|CM (Pedro)": "Colegio Montejo 14-15",
-  "Chupones|Rojo-Azul|CM (Pedro)": "Colegio Montejo 20-21 A",
-  "Chupones|Rojo-Azul|CM (David)": "Colegio Montejo 20-21 B"
+  "Chupones||CM (Pedro)": "Colegio Montejo 20-21 A",
+  "Chupones||CM (David)": "Colegio Montejo 20-21 B"
 };
 
 // Calendario completo: [id, jornada, fecha, hora, cancha, categoria, grupo, eqA, eqB, tipo]
 const SCHEDULE = [
-  [1,"1","2026-04-27","16:00",1,"Chupones","Rojo-Azul","Rogers Hall","CM (David)","Grupos"],
-  [2,"1","2026-04-27","16:00",2,"Chupones","Rojo-Azul","CM (Pedro)","Escuela Modelo","Grupos"],
+  [1,"1","2026-04-27","16:00",1,"Chupones","","Rogers Hall","CM (David)","Grupos"],
+  [2,"1","2026-04-27","16:00",2,"Chupones","","CM (Pedro)","Escuela Modelo","Grupos"],
   [19,"1","2026-04-27","16:00",3,"Escuelita","Azul","CM (Oscar)","Escuela Modelo","Grupos"],
   [20,"1","2026-04-27","16:00",4,"Escuelita","Azul","CEL","Club Raptors","Grupos"],
   [35,"1","2026-04-27","17:00",1,"Micro","Azul","CM (Libi)","Escuela Modelo","Grupos"],
@@ -657,8 +707,8 @@ const SCHEDULE = [
   [63,"1","2026-04-27","19:00",2,"Mini","Azul","CM (David)","Rogers Hall","Grupos"],
   [65,"1","2026-04-27","19:00",3,"Mini","Azul","Escuela Modelo","CEL","Grupos"],
   [50,"1","2026-04-27","19:00",4,"Micro","Rosa","Rayos All Stars F","CEL F","Grupos"],
-  [3,"2","2026-04-28","16:00",1,"Chupones","Rojo-Azul","CM (David)","Escuela Modelo","Grupos"],
-  [4,"2","2026-04-28","16:00",2,"Chupones","Rojo-Azul","CEL","CM (Pedro)","Grupos"],
+  [3,"2","2026-04-28","16:00",1,"Chupones","","CM (David)","Escuela Modelo","Grupos"],
+  [4,"2","2026-04-28","16:00",2,"Chupones","","CEL","CM (Pedro)","Grupos"],
   [21,"2","2026-04-28","16:00",3,"Escuelita","Azul","Club Raptors","CM (Oscar)","Grupos"],
   [40,"2","2026-04-28","16:00",4,"Micro","Azul","CM (Cuesy)","Escuela Modelo","Grupos"],
   [38,"2","2026-04-28","17:00",1,"Micro","Azul","Club Lobos","CM (Libi)","Grupos"],
@@ -672,18 +722,18 @@ const SCHEDULE = [
   [58,"2","2026-04-28","19:00",1,"Mini","Rojo","Club Cobras","Club Lobos","Grupos"],
   [66,"2","2026-04-28","19:00",2,"Mini","Azul","Club Hormigas","CM (David)","Grupos"],
   [68,"2","2026-04-28","19:00",3,"Mini","Azul","Rogers Hall","Escuela Modelo","Grupos"],
-  [5,"3","2026-05-06","16:00",1,"Chupones","Rojo-Azul","CM (David)","CEL","Grupos"],
+  [5,"3","2026-05-06","16:00",1,"Chupones","","CM (David)","CEL","Grupos"],
   [23,"3","2026-05-06","16:00",2,"Escuelita","Azul","CM (Oscar)","CEL","Grupos"],
   [32,"3","2026-05-06","16:00",3,"Micro","Rojo","Club Wildcats","Rogers Hall","Grupos"],
-  [6,"3","2026-05-06","17:00",1,"Chupones","Rojo-Azul","Escuela Modelo","Rogers Hall","Grupos"],
+  [6,"3","2026-05-06","17:00",1,"Chupones","","Escuela Modelo","Rogers Hall","Grupos"],
   [31,"3","2026-05-06","17:00",2,"Micro","Rojo","CM (Oscar)","Club Hormigas","Grupos"],
   [16,"3","2026-05-06","17:00",3,"Escuelita","Rojo","Rogers Hall","Rayos All Stars","Grupos"],
   [24,"3","2026-05-06","18:00",1,"Escuelita","Azul","Escuela Modelo","Club Raptors","Grupos"],
   [42,"3","2026-05-06","18:00",2,"Micro","Azul","Escuela Modelo","CM (Oscar)","Grupos"],
   [52,"3","2026-05-06","18:00",3,"Micro","Rosa","Club Cobras F","Rayos All Stars F","Grupos"],
   [37,"3","2026-05-06","19:00",2,"Micro","Azul","Club Cobras","CM (Cuesy)","Grupos"],
-  [7,"4","2026-05-07","16:00",1,"Chupones","Rojo-Azul","Rogers Hall","CEL","Grupos"],
-  [8,"4","2026-05-07","16:00",2,"Chupones","Rojo-Azul","CM (Pedro)","CM (David)","Grupos"],
+  [7,"4","2026-05-07","16:00",1,"Chupones","","Rogers Hall","CEL","Grupos"],
+  [8,"4","2026-05-07","16:00",2,"Chupones","","CM (Pedro)","CM (David)","Grupos"],
   [14,"4","2026-05-07","16:00",3,"Escuelita","Rojo","Rayos All Stars","Cumbres","Grupos"],
   [22,"4","2026-05-07","17:00",1,"Escuelita","Azul","Escuela Modelo","CEL","Grupos"],
   [43,"4","2026-05-07","17:00",2,"Micro","Azul","Club Lobos","CM (Cuesy)","Grupos"],
@@ -694,10 +744,10 @@ const SCHEDULE = [
   [47,"Pendiente","","",null,"Micro","Rosa","CM F (Libi)","Rayos All Stars F","Grupos"],
   [49,"Pendiente","","",null,"Micro","Rosa","Club Cobras F","CM F (Libi)","Grupos"],
   [51,"Pendiente","","",null,"Micro","Rosa","CM F (Libi)","CEL F","Grupos"],
-  [10,"Final","2026-05-09","08:00",1,"Chupones","Rojo-Azul","Por definir","Por definir","Final Plata"],
+  [10,"Final","2026-05-09","08:00",1,"Chupones","","Por definir","Por definir","Final Plata"],
   [18,"Final","2026-05-09","08:00",2,"Escuelita","Rojo","Por definir","Por definir","Final Plata"],
   [26,"Final","2026-05-09","08:00",3,"Escuelita","Azul","Por definir","Por definir","Final Plata"],
-  [9,"Final","2026-05-09","09:00",1,"Chupones","Rojo-Azul","Por definir","Por definir","Final Oro"],
+  [9,"Final","2026-05-09","09:00",1,"Chupones","","Por definir","Por definir","Final Oro"],
   [17,"Final","2026-05-09","09:00",2,"Escuelita","Rojo","Por definir","Por definir","Final Oro"],
   [25,"Final","2026-05-09","09:00",3,"Escuelita","Azul","Por definir","Por definir","Final Oro"],
   [46,"Final","2026-05-09","10:00",3,"Micro","Azul","Por definir","Por definir","Final Bronce"],
@@ -781,6 +831,83 @@ async function fetchResults(){
 }
 
 /* =========================================================================
+   FETCH FINALES CONFIG (control por final del comité)
+   Lee la pestaña 'Finales' con columnas:
+     ID Juego | Categoría | Bloque | Tipo | Equipo A (sugerido) |
+     Equipo A OVERRIDE | Equipo B (sugerido) | Equipo B OVERRIDE |
+     Autorizar publicación
+   Devuelve un mapa { idJuego: { overrideA, overrideB, autorizado } }
+   ========================================================================= */
+async function fetchFinalesConfig(){
+  const empty = {};
+  if(!CONFIG.GID_FINALES || CONFIG.GID_FINALES.indexOf("REEMPLAZA") === 0) return empty;
+  const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SPREADSHEET_ID}/export?format=csv&gid=${CONFIG.GID_FINALES}`;
+  try{
+    const r = await fetch(url + "&t=" + Date.now());
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    const text = await r.text();
+    const rows = parseCSV(text);
+    const target = (CONFIG.PALABRA_AUTORIZACION||"").trim().toLowerCase();
+    let headerIdx = rows.findIndex(r => r.some(c => /id\s*juego/i.test(c)));
+    if(headerIdx < 0) return empty;
+    const headers = rows[headerIdx].map(h => h.trim().toLowerCase());
+    const colId    = headers.findIndex(h => /id\s*juego/.test(h));
+    const colOvA   = headers.findIndex(h => /equipo\s*a\s*override/.test(h));
+    const colOvB   = headers.findIndex(h => /equipo\s*b\s*override/.test(h));
+    const colAuth  = headers.findIndex(h => /autorizar/.test(h));
+    const map = {};
+    rows.slice(headerIdx+1).forEach(row => {
+      const id = (row[colId]||"").trim();
+      if(!id) return;
+      const overrideA = colOvA >= 0 ? (row[colOvA]||"").trim() : "";
+      const overrideB = colOvB >= 0 ? (row[colOvB]||"").trim() : "";
+      const authVal   = colAuth>= 0 ? (row[colAuth]||"").trim().toLowerCase() : "";
+      map[id] = {
+        overrideA,
+        overrideB,
+        autorizado: target ? (authVal === target) : false
+      };
+    });
+    return map;
+  }catch(e){
+    console.warn("Error al cargar pestaña Finales:", e);
+    return empty;
+  }
+}
+
+/* =========================================================================
+   PROPUESTAS DE FINALES (qué tabla y qué posición lee la página)
+   ========================================================================= */
+const FINAL_PROPOSALS = {
+  9:  {a:["Chupones",       0], b:["Chupones",       1]},
+  10: {a:["Chupones",       2], b:["Chupones",       3]},
+  17: {a:["Escuelita-Rojo", 0], b:["Escuelita-Rojo", 1]},
+  18: {a:["Escuelita-Rojo", 2], b:["Escuelita-Rojo", 3]},
+  25: {a:["Escuelita-Azul", 0], b:["Escuelita-Azul", 1]},
+  26: {a:["Escuelita-Azul", 2], b:["Escuelita-Azul", 3]},
+  33: {a:["Micro-Rojo",     0], b:["Micro-Rojo",     1]},
+  34: {a:["Micro-Rojo",     2], b:["Micro-Rojo",     3]},
+  44: {a:["Micro-Azul-B1",  0], b:["Micro-Azul-B2",  0]},
+  45: {a:["Micro-Azul-B1",  1], b:["Micro-Azul-B2",  1]},
+  46: {a:["Micro-Azul-B1",  2], b:["Micro-Azul-B2",  2]},
+  53: {a:["Micro-Rosa",     0], b:["Micro-Rosa",     1]},
+  54: {a:["Micro-Rosa",     2], b:["Micro-Rosa",     3]},
+  61: {a:["Mini-Rojo",      0], b:["Mini-Rojo",      1]},
+  62: {a:["Mini-Rojo",      2], b:["Mini-Rojo",      3]},
+  69: {a:["Mini-Azul-B1",   0], b:["Mini-Azul-B2",   0]},
+  70: {a:["Mini-Azul-B1",   1], b:["Mini-Azul-B2",   1]},
+  71: {a:["Mini-Azul-B1",   2], b:["Mini-Azul-B2",   2]},
+  "BRONCE-CHUPONES": {a:["Chupones", 4], b:null}
+};
+
+function getProposed(stand, key, idx){
+  const arr = stand[key];
+  if(!arr || idx >= arr.length) return null;
+  const t = arr[idx];
+  return t && t.team ? t.team : null;
+}
+
+/* =========================================================================
    MERGE: aplica resultados al schedule
    ========================================================================= */
 function mergeResults(games, csv){
@@ -830,46 +957,36 @@ function pointsFor(estado, gano, jugado){
    CALCULAR TABLAS DE POSICIONES
    ========================================================================= */
 function calcStandings(games){
-  // Inicializar standings por categoría/grupo
+  // Inicializar standings por categoría/grupo.
+  // GC = victorias con equipo completo (≥10 jug.) → 2do criterio de desempate
+  // h2h: tabla de resultados directos contra cada otro equipo (clave: nombre del rival)
+  //      h2h[rival] = {gp:0, w:0, l:0, pf:0, pc:0}  (gp=games played, w=wins, l=losses)
   const stand = {};
   Object.keys(EQUIPOS).forEach(k => {
     stand[k] = EQUIPOS[k].map(t => ({
-      team:t, J:0, G:0, P:0, F:0, PF:0, PC:0, PTS:0
+      team:t, J:0, G:0, GC:0, P:0, F:0, PF:0, PC:0, PTS:0, h2h:{}
     }));
   });
+
+  // Detectar bloque (Micro Azul/Mini Azul tienen B1/B2)
+  function findEntry(cat, grp, team){
+    const tries = grp ? [`${cat}-${grp}`,`${cat}-${grp}-B1`,`${cat}-${grp}-B2`] : [cat];
+    for(const k of tries){
+      if(!stand[k]) continue;
+      const e = stand[k].find(x=>x.team===team);
+      if(e) return {key:k, e};
+    }
+    return null;
+  }
 
   games.forEach(g => {
     if(g.tipo !== "Grupos") return;
 
-    let categorias = [g.categoria];
-    let grupos = [g.grupo];
-
-    // Caso especial Chupones Rojo-Azul: aplicar a ambos grupos
-    if(g.grupo === "Rojo-Azul"){
-      categorias = ["Chupones","Chupones"];
-      grupos = ["Rojo","Azul"];
-    }
-
     const teamA = resolveTeam(g.categoria, g.grupo, g.equipoA);
     const teamB = resolveTeam(g.categoria, g.grupo, g.equipoB);
 
-    // Detectar bloque
-    function findEntry(cat, grp, team){
-      const tries = [
-        `${cat}-${grp}`,
-        `${cat}-${grp}-B1`,
-        `${cat}-${grp}-B2`
-      ];
-      for(const k of tries){
-        if(!stand[k]) continue;
-        const e = stand[k].find(x=>x.team===team);
-        if(e) return {key:k, e};
-      }
-      return null;
-    }
-
-    const eA = findEntry(g.categoria, g.grupo, teamA) || findEntry(g.categoria, g.grupo === "Rojo-Azul" ? "Rojo" : g.grupo, teamA) || findEntry(g.categoria, g.grupo === "Rojo-Azul" ? "Azul" : g.grupo, teamA);
-    const eB = findEntry(g.categoria, g.grupo, teamB) || findEntry(g.categoria, g.grupo === "Rojo-Azul" ? "Rojo" : g.grupo, teamB) || findEntry(g.categoria, g.grupo === "Rojo-Azul" ? "Azul" : g.grupo, teamB);
+    const eA = findEntry(g.categoria, g.grupo, teamA);
+    const eB = findEntry(g.categoria, g.grupo, teamB);
 
     if(!eA || !eB) return;
 
@@ -878,7 +995,6 @@ function calcStandings(games){
     if(!jugado) return;
 
     const mA = Number(g.marcadorA)||0, mB = Number(g.marcadorB)||0;
-    const isForfit = g.estadoPartido === "Forfit" || g.estadoA === "Forfit" || g.estadoB === "Forfit";
     const ganoA = mA > mB && !(g.estadoA === "Forfit");
     const ganoB = mB > mA && !(g.estadoB === "Forfit");
 
@@ -886,35 +1002,96 @@ function calcStandings(games){
     eA.e.PF += mA; eA.e.PC += mB;
     eB.e.PF += mB; eB.e.PC += mA;
 
+    // Inicializar registros head-to-head si no existen
+    if(!eA.e.h2h[teamB]) eA.e.h2h[teamB] = {gp:0, w:0, l:0, pf:0, pc:0};
+    if(!eB.e.h2h[teamA]) eB.e.h2h[teamA] = {gp:0, w:0, l:0, pf:0, pc:0};
+    const hA = eA.e.h2h[teamB], hB = eB.e.h2h[teamA];
+    hA.gp++; hB.gp++;
+    hA.pf += mA; hA.pc += mB;
+    hB.pf += mB; hB.pc += mA;
+
     if(g.estadoA === "Forfit"){
       eA.e.F++; eB.e.G++;
+      if(g.estadoB === "Completo") eB.e.GC++;
       eA.e.PTS += 0;
       eB.e.PTS += g.estadoB === "Completo" ? 3 : (g.estadoB === "Incompleto" ? 2 : 0);
+      hB.w++; hA.l++;
     }else if(g.estadoB === "Forfit"){
       eB.e.F++; eA.e.G++;
+      if(g.estadoA === "Completo") eA.e.GC++;
       eB.e.PTS += 0;
       eA.e.PTS += g.estadoA === "Completo" ? 3 : (g.estadoA === "Incompleto" ? 2 : 0);
+      hA.w++; hB.l++;
     }else{
       if(ganoA){
         eA.e.G++; eB.e.P++;
+        if(g.estadoA === "Completo") eA.e.GC++;
         eA.e.PTS += g.estadoA === "Completo" ? 3 : 2;
         eB.e.PTS += 1;
+        hA.w++; hB.l++;
       }else if(ganoB){
         eB.e.G++; eA.e.P++;
+        if(g.estadoB === "Completo") eB.e.GC++;
         eB.e.PTS += g.estadoB === "Completo" ? 3 : 2;
         eA.e.PTS += 1;
+        hA.l++; hB.w++;
       }
     }
   });
 
-  // Ordenar cada tabla
+  // Aplicar criterios de desempate del REGLAMENTO (Art. III, punto 2):
+  //  1) Mayor número de puntos
+  //  2) Mayor número de victorias con equipo completo (GC)
+  //  3) Mayor diferencia de puntos (PF - PC)
+  //  4a) Resultado directo entre los equipos involucrados
+  //      (faltas y faltas técnicas no se capturan en el sistema → resolución manual del comité si persiste empate)
   Object.keys(stand).forEach(k => {
-    stand[k].sort((a,b)=>{
+    const arr = stand[k];
+
+    // Sort principal por criterios 1-3
+    arr.sort((a,b)=>{
       if(b.PTS !== a.PTS) return b.PTS - a.PTS;
+      if(b.GC  !== a.GC ) return b.GC  - a.GC;
       const dgA = a.PF-a.PC, dgB = b.PF-b.PC;
       if(dgB !== dgA) return dgB - dgA;
-      return b.PF - a.PF;
+      return 0;
     });
+
+    // Sub-orden por head-to-head dentro de bloques empatados en (PTS, GC, dif)
+    function tieKey(t){ return `${t.PTS}|${t.GC}|${t.PF-t.PC}`; }
+    let i = 0;
+    while(i < arr.length){
+      let j = i+1;
+      while(j < arr.length && tieKey(arr[j]) === tieKey(arr[i])) j++;
+      if(j - i >= 2){
+        // Re-ordenar el sub-rango [i, j) por mini-tabla h2h (solo entre los empatados)
+        const tied = arr.slice(i, j);
+        const names = tied.map(t=>t.team);
+        // Para cada equipo empatado: contar wins entre los empatados, dif. en esos partidos, PF anotado en esos partidos
+        tied.forEach(t => {
+          let mW=0, mDif=0, mPF=0;
+          names.forEach(n=>{
+            if(n===t.team) return;
+            const h = t.h2h[n];
+            if(!h) return;
+            mW += h.w;
+            mDif += (h.pf - h.pc);
+            mPF += h.pf;
+          });
+          t._mW = mW; t._mDif = mDif; t._mPF = mPF;
+        });
+        tied.sort((a,b)=>{
+          if(b._mW   !== a._mW)   return b._mW   - a._mW;
+          if(b._mDif !== a._mDif) return b._mDif - a._mDif;
+          if(b._mPF  !== a._mPF)  return b._mPF  - a._mPF;
+          return 0;
+        });
+        for(let k=0;k<tied.length;k++) arr[i+k] = tied[k];
+        // limpiar campos auxiliares
+        tied.forEach(t=>{ delete t._mW; delete t._mDif; delete t._mPF; });
+      }
+      i = j;
+    }
   });
 
   return stand;
@@ -925,7 +1102,7 @@ function calcStandings(games){
    ========================================================================= */
 const CATEGORIAS_ORDER = ["Chupones","Escuelita","Micro","Mini"];
 const GRUPOS_BY_CAT = {
-  "Chupones":[["Rojo","Chupones-Rojo"],["Azul","Chupones-Azul"]],
+  "Chupones":[["","Chupones"]],
   "Escuelita":[["Rojo","Escuelita-Rojo"],["Azul","Escuelita-Azul"]],
   "Micro":[["Rojo","Micro-Rojo"],["Azul B1","Micro-Azul-B1"],["Azul B2","Micro-Azul-B2"],["Rosa","Micro-Rosa"]],
   "Mini":[["Rojo","Mini-Rojo"],["Azul B1","Mini-Azul-B1"],["Azul B2","Mini-Azul-B2"]]
@@ -975,27 +1152,36 @@ function drawCats(stand, filter){
       if(label.includes("B1")) bloqueLabel = '<span class="bloque-tag">Bloque 1</span>';
       else if(label.includes("B2")) bloqueLabel = '<span class="bloque-tag b2">Bloque 2</span>';
 
+      const groupTitle = label ? label.replace("B1","").replace("B2","").trim() : "";
+      // Marcar 5° lugar de Chupones como Bronce automático
+      const isChupones = (cat === "Chupones");
+
       grp.innerHTML = `
         <div class="group-header">
-          <h3>${cat} ${label.replace("B1","").replace("B2","").trim()}</h3>
+          <h3>${cat}${groupTitle?" "+groupTitle:""}</h3>
           <span class="badge">${teams.length} equipos</span>
         </div>
         ${bloqueLabel ? '<div style="padding:8px 16px 0">'+bloqueLabel+'</div>' : ''}
         <table class="standings-table">
           <thead><tr>
-            <th>Equipo</th><th>JJ</th><th>JG</th><th>JP</th><th>PF</th><th>PC</th><th>PTS</th>
+            <th>Equipo</th><th>JJ</th><th>JG</th><th>JP</th><th>PF</th><th>PC</th><th>DIF</th><th>PTS</th>
           </tr></thead>
           <tbody>
           ${teams.map((t,i)=>{
             const cls = i===0?"pos-1":(i===1?"pos-2":(i===2?"pos-3":""));
             const numCls = i===0?"gold":(i===1?"silv":(i===2?"bron":""));
-            return `<tr class="${cls}">
-              <td><span class="pos-num ${numCls}">${i+1}</span>${t.team}</td>
+            const isAutoBronce = isChupones && i===4; // 5° lugar de Chupones
+            const tag = isAutoBronce ? ' <span style="background:var(--bronze);color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px">BRONCE AUTO</span>' : '';
+            const dif = t.PF - t.PC;
+            const difStr = dif > 0 ? "+"+dif : ""+dif;
+            return `<tr class="${cls}${isAutoBronce?' pos-bronze-auto':''}">
+              <td><span class="pos-num ${numCls}">${i+1}</span>${t.team}${tag}</td>
               <td>${t.J}</td>
               <td>${t.G}</td>
               <td>${t.P}</td>
               <td>${t.PF}</td>
               <td>${t.PC}</td>
+              <td>${difStr}</td>
               <td class="pts-cell">${t.PTS}</td>
             </tr>`;
           }).join("")}
@@ -1045,6 +1231,7 @@ function fmtDate(iso){
 }
 
 function catClass(c){
+  if(!c) return "cat-rojoazul";
   if(c==="Rojo-Azul") return "cat-rojoazul";
   if(c==="Rojo") return "cat-rojo";
   if(c==="Azul") return "cat-azul";
@@ -1129,58 +1316,135 @@ function renderGameRow(g){
 
 /* =========================================================================
    RENDER: FINALES
+   - Si autorizado=false: la página oculta los nombres de equipos asignados
+     (placeholder "Por anunciar") y muestra un banner explicando que el
+     comité aún no ha autorizado la publicación.
+   - Si autorizado=true: muestra equipos asignados (los del Sheet) y resultados.
+   - Para Chupones: añade card especial de Bronce automático con el 5° lugar
+     de la tabla de posiciones (no se juega partido).
    ========================================================================= */
-function renderFinales(games){
+function renderFinales(games, stand, finalesCfg){
   const cont = document.getElementById("finalesContent");
   cont.innerHTML = "";
+
+  function resolveFinal(id){
+    const cfg = finalesCfg[String(id)] || {};
+    const prop = FINAL_PROPOSALS[id];
+    let propA = null, propB = null;
+    if(prop){
+      if(prop.a) propA = getProposed(stand, prop.a[0], prop.a[1]);
+      if(prop.b) propB = getProposed(stand, prop.b[0], prop.b[1]);
+    }
+    return {
+      teamA: cfg.overrideA || propA,
+      teamB: cfg.overrideB || propB,
+      hasOverrideA: !!cfg.overrideA,
+      hasOverrideB: !!cfg.overrideB,
+      autorizado: !!cfg.autorizado
+    };
+  }
+
+  const totalFinales = Object.keys(FINAL_PROPOSALS).length;
+  let autorizadas = 0;
+  Object.keys(FINAL_PROPOSALS).forEach(id => {
+    if((finalesCfg[String(id)]||{}).autorizado) autorizadas++;
+  });
+
+  const banner = document.createElement("div");
+  if(autorizadas === 0){
+    banner.className = "auth-banner lock";
+    banner.innerHTML = '<span>🔒</span><div><b>Finales aún no publicadas</b><br><small>El comité organizador todavía no autoriza la publicación de los clasificados. Cada final se libera por separado conforme se vaya definiendo.</small></div>';
+  }else if(autorizadas === totalFinales){
+    banner.className = "auth-banner ok";
+    banner.innerHTML = '<span>✅</span><div><b>Todas las finales publicadas</b><br><small>El comité organizador ya autorizó la publicación de las '+totalFinales+' finales.</small></div>';
+  }else{
+    banner.className = "auth-banner partial";
+    banner.innerHTML = '<span>📣</span><div><b>Finales en proceso de publicación</b><br><small>'+autorizadas+' de '+totalFinales+' finales ya publicadas. Las demás aparecerán en cuanto el comité las autorice.</small></div>';
+  }
+  cont.appendChild(banner);
+
+  const grid = document.createElement("div");
+  grid.className = "finals-grid-inner";
+
+  const bronceId = "BRONCE-CHUPONES";
+  if(stand && stand["Chupones"] && stand["Chupones"].length === 5){
+    const r = resolveFinal(bronceId);
+    const card = document.createElement("div");
+    card.className = "final-card bronze auto";
+    const showName = r.autorizado && r.teamA;
+    card.innerHTML = `
+      <div class="final-tier">🥉 Bronce</div>
+      <div class="final-cat">Chupones <span class="final-grupo" style="background:var(--bronze);color:#fff">CAMPEÓN AUTOMÁTICO</span></div>
+      <div class="final-match auto">
+        <div class="final-team win" style="text-align:center;flex:1">
+          ${showName ? r.teamA + (r.hasOverrideA?' <span class="override-tag" title="Asignación manual del comité">✎</span>':'') : '<i style="opacity:.6">Por anunciar</i>'}
+        </div>
+      </div>
+      <div class="final-meta">
+        <span>🏆 Sin partido — trofeo directo al 5° lugar</span>
+        ${r.autorizado ? '<span class="auth-pill ok">Publicado</span>' : '<span class="auth-pill pending">Pendiente</span>'}
+      </div>`;
+    grid.appendChild(card);
+  }
+
   const finals = games.filter(g => g.tipo !== "Grupos");
-  // Ordenar: Oro, Plata, Bronce; luego categoría
   const tierOrder = {"Final Oro":1, "Final Plata":2, "Final Bronce":3};
   finals.sort((a,b)=>{
     const ta = tierOrder[a.tipo]||9, tb = tierOrder[b.tipo]||9;
     if(ta!==tb) return ta-tb;
     return CATEGORIAS_ORDER.indexOf(a.categoria) - CATEGORIAS_ORDER.indexOf(b.categoria);
   });
-  finals.forEach(g=>{
+
+  finals.forEach(g => {
     const tier = g.tipo === "Final Oro" ? "" : (g.tipo === "Final Plata" ? "silver" : "bronze");
     const tierLabel = g.tipo === "Final Oro" ? "🥇 Oro" : (g.tipo === "Final Plata" ? "🥈 Plata" : "🥉 Bronce");
     const hasResult = g.marcadorA != null && g.marcadorB != null && !isNaN(g.marcadorA) && !isNaN(g.marcadorB);
-    const winA = hasResult && g.marcadorA > g.marcadorB;
-    const winB = hasResult && g.marcadorB > g.marcadorA;
+
+    const r = resolveFinal(g.id);
+    const placeholder = '<i style="opacity:.55">Por anunciar</i>';
+    const showA = r.autorizado && r.teamA ? (r.teamA + (r.hasOverrideA?' <span class="override-tag" title="Asignación manual del comité">✎</span>':'')) : placeholder;
+    const showB = r.autorizado && r.teamB ? (r.teamB + (r.hasOverrideB?' <span class="override-tag" title="Asignación manual del comité">✎</span>':'')) : placeholder;
+    const showResult = r.autorizado && hasResult;
+    const winA = showResult && g.marcadorA > g.marcadorB;
+    const winB = showResult && g.marcadorB > g.marcadorA;
+
     const card = document.createElement("div");
-    card.className = "final-card "+tier;
+    card.className = "final-card "+tier+(r.autorizado?"":" pending");
     card.innerHTML = `
       <div class="final-tier">${tierLabel}</div>
-      <div class="final-cat">${g.categoria} <span class="final-grupo">${g.grupo}</span></div>
+      <div class="final-cat">${g.categoria}${g.grupo?` <span class="final-grupo">${g.grupo}</span>`:""}</div>
       <div class="final-match">
         <div class="final-team ${winA?"win":""}">
-          ${hasResult?`<span class="score">${g.marcadorA}</span>`:''}
-          ${g.equipoA}
+          ${showResult?`<span class="score">${g.marcadorA}</span>`:''}
+          ${showA}
         </div>
         <div class="final-vs">VS</div>
         <div class="final-team ${winB?"win":""}">
-          ${hasResult?`<span class="score">${g.marcadorB}</span>`:''}
-          ${g.equipoB}
+          ${showResult?`<span class="score">${g.marcadorB}</span>`:''}
+          ${showB}
         </div>
       </div>
       <div class="final-meta">
         <span>📅 ${g.fecha?fmtDate(g.fecha):"Por programar"}</span>
         <span>🕐 ${g.hora||""}${g.cancha?" · Cancha "+g.cancha:""}</span>
+        ${r.autorizado ? '<span class="auth-pill ok">Publicado</span>' : '<span class="auth-pill pending">Pendiente</span>'}
       </div>`;
-    cont.appendChild(card);
+    grid.appendChild(card);
   });
+
+  cont.appendChild(grid);
 }
 
 /* =========================================================================
    INICIALIZAR
    ========================================================================= */
 async function init(){
-  const csv = await fetchResults();
+  const [csv, finalesCfg] = await Promise.all([fetchResults(), fetchFinalesConfig()]);
   const merged = mergeResults(games, csv);
   const stand = calcStandings(merged);
   renderCategorias(stand);
   renderCalendario(merged);
-  renderFinales(merged);
+  renderFinales(merged, stand, finalesCfg);
 
   // Active link en nav al hacer scroll
   const sections = document.querySelectorAll("section[id]");
