@@ -685,8 +685,16 @@ const ALIAS = {
   "Mini|Rojo|CM (Jorge)": "Colegio Montejo 14 A",
   "Mini|Azul|CM (David)": "Colegio Montejo 15 A",
   "Mini|Azul|CM (Pedro)": "Colegio Montejo 14-15",
-  "Chupones||CM (Pedro)": "Colegio Montejo 20-21 A",
-  "Chupones||CM (David)": "Colegio Montejo 20-21 B"
+  "Chupones||CM (Pedro)": "Colegio Montejo 20-21 B",
+  "Chupones||CM (David)": "Colegio Montejo 20-21 A"
+};
+
+// Juegos donde uno de los equipos NO suma estadísticas (J, G, P, PF, PC, PTS, GC).
+// El otro equipo SÍ se cuenta normalmente. Útil para partidos extra que se juegan
+// para igualar número de partidos pero no impactan al equipo "donante".
+// Mini Azul J73: CM (Pedro) (B1) vs CEL (B2) — no cuenta para CM (Pedro).
+const NO_COUNT_TEAM = {
+  73: "A"
 };
 
 // Calendario completo: [id, jornada, fecha, hora, cancha, categoria, grupo, eqA, eqB, tipo]
@@ -739,11 +747,13 @@ const SCHEDULE = [
   [43,"4","2026-05-07","17:00",2,"Micro","Azul","Club Lobos","CM (Cuesy)","Grupos"],
   [60,"5","2026-05-08","16:00",2,"Mini","Rojo","Club Cobras","Club Wildcats","Grupos"],
   [59,"5","2026-05-08","17:00",2,"Mini","Rojo","CM (Jorge)","Club Lobos","Grupos"],
-  [15,"Pendiente","","",null,"Escuelita","Rojo","CM (Libi)","Cumbres","Grupos"],
-  [41,"Pendiente","","",null,"Micro","Azul","CM (Libi)","Club Cobras","Grupos"],
-  [47,"Pendiente","","",null,"Micro","Rosa","CM F (Libi)","Rayos All Stars F","Grupos"],
-  [49,"Pendiente","","",null,"Micro","Rosa","Club Cobras F","CM F (Libi)","Grupos"],
-  [51,"Pendiente","","",null,"Micro","Rosa","CM F (Libi)","CEL F","Grupos"],
+  [15,"3","2026-05-06","17:00",4,"Escuelita","Rojo","CM (Libi)","Cumbres","Grupos"],
+  [51,"3","2026-05-06","18:00",4,"Micro","Rosa","CM F (Libi)","CEL F","Grupos"],
+  [72,"3","2026-05-06","19:00",1,"Mini","Azul","Rogers Hall","Club Hormigas","Grupos"],
+  [41,"4","2026-05-07","16:00",4,"Micro","Azul","CM (Libi)","Club Cobras","Grupos"],
+  [73,"4","2026-05-07","17:00",3,"Mini","Azul","CM (Pedro)","CEL","Grupos"],
+  [49,"4","2026-05-07","17:00",4,"Micro","Rosa","Club Cobras F","CM F (Libi)","Grupos"],
+  [47,"5","2026-05-08","18:00",2,"Micro","Rosa","CM F (Libi)","Rayos All Stars F","Grupos"],
   [10,"Final","2026-05-09","08:00",1,"Chupones","","Por definir","Por definir","Final Plata"],
   [18,"Final","2026-05-09","08:00",2,"Escuelita","Rojo","Por definir","Por definir","Final Plata"],
   [26,"Final","2026-05-09","08:00",3,"Escuelita","Azul","Por definir","Por definir","Final Plata"],
@@ -998,43 +1008,59 @@ function calcStandings(games){
     const ganoA = mA > mB && !(g.estadoA === "Forfit");
     const ganoB = mB > mA && !(g.estadoB === "Forfit");
 
-    eA.e.J++; eB.e.J++;
-    eA.e.PF += mA; eA.e.PC += mB;
-    eB.e.PF += mB; eB.e.PC += mA;
+    // Equipos cuyas estadísticas NO se actualizan en este juego (juego "extra")
+    const noCount = NO_COUNT_TEAM[g.id];
+    const countA = noCount !== "A";
+    const countB = noCount !== "B";
 
-    // Inicializar registros head-to-head si no existen
-    if(!eA.e.h2h[teamB]) eA.e.h2h[teamB] = {gp:0, w:0, l:0, pf:0, pc:0};
-    if(!eB.e.h2h[teamA]) eB.e.h2h[teamA] = {gp:0, w:0, l:0, pf:0, pc:0};
-    const hA = eA.e.h2h[teamB], hB = eB.e.h2h[teamA];
-    hA.gp++; hB.gp++;
-    hA.pf += mA; hA.pc += mB;
-    hB.pf += mB; hB.pc += mA;
+    if(countA){ eA.e.J++; eA.e.PF += mA; eA.e.PC += mB; }
+    if(countB){ eB.e.J++; eB.e.PF += mB; eB.e.PC += mA; }
+
+    // Inicializar registros head-to-head si no existen (sólo para los lados que cuentan)
+    if(countA && !eA.e.h2h[teamB]) eA.e.h2h[teamB] = {gp:0, w:0, l:0, pf:0, pc:0};
+    if(countB && !eB.e.h2h[teamA]) eB.e.h2h[teamA] = {gp:0, w:0, l:0, pf:0, pc:0};
+    const hA = countA ? eA.e.h2h[teamB] : null;
+    const hB = countB ? eB.e.h2h[teamA] : null;
+    if(hA){ hA.gp++; hA.pf += mA; hA.pc += mB; }
+    if(hB){ hB.gp++; hB.pf += mB; hB.pc += mA; }
 
     if(g.estadoA === "Forfit"){
-      eA.e.F++; eB.e.G++;
-      if(g.estadoB === "Completo") eB.e.GC++;
-      eA.e.PTS += 0;
-      eB.e.PTS += g.estadoB === "Completo" ? 3 : (g.estadoB === "Incompleto" ? 2 : 0);
-      hB.w++; hA.l++;
+      if(countA){ eA.e.F++; eA.e.PTS += 0; }
+      if(countB){
+        eB.e.G++;
+        if(g.estadoB === "Completo") eB.e.GC++;
+        eB.e.PTS += g.estadoB === "Completo" ? 3 : (g.estadoB === "Incompleto" ? 2 : 0);
+      }
+      if(hB) hB.w++;
+      if(hA) hA.l++;
     }else if(g.estadoB === "Forfit"){
-      eB.e.F++; eA.e.G++;
-      if(g.estadoA === "Completo") eA.e.GC++;
-      eB.e.PTS += 0;
-      eA.e.PTS += g.estadoA === "Completo" ? 3 : (g.estadoA === "Incompleto" ? 2 : 0);
-      hA.w++; hB.l++;
+      if(countB){ eB.e.F++; eB.e.PTS += 0; }
+      if(countA){
+        eA.e.G++;
+        if(g.estadoA === "Completo") eA.e.GC++;
+        eA.e.PTS += g.estadoA === "Completo" ? 3 : (g.estadoA === "Incompleto" ? 2 : 0);
+      }
+      if(hA) hA.w++;
+      if(hB) hB.l++;
     }else{
       if(ganoA){
-        eA.e.G++; eB.e.P++;
-        if(g.estadoA === "Completo") eA.e.GC++;
-        eA.e.PTS += g.estadoA === "Completo" ? 3 : 2;
-        eB.e.PTS += 1;
-        hA.w++; hB.l++;
+        if(countA){
+          eA.e.G++;
+          if(g.estadoA === "Completo") eA.e.GC++;
+          eA.e.PTS += g.estadoA === "Completo" ? 3 : 2;
+        }
+        if(countB){ eB.e.P++; eB.e.PTS += 1; }
+        if(hA) hA.w++;
+        if(hB) hB.l++;
       }else if(ganoB){
-        eB.e.G++; eA.e.P++;
-        if(g.estadoB === "Completo") eB.e.GC++;
-        eB.e.PTS += g.estadoB === "Completo" ? 3 : 2;
-        eA.e.PTS += 1;
-        hA.l++; hB.w++;
+        if(countB){
+          eB.e.G++;
+          if(g.estadoB === "Completo") eB.e.GC++;
+          eB.e.PTS += g.estadoB === "Completo" ? 3 : 2;
+        }
+        if(countA){ eA.e.P++; eA.e.PTS += 1; }
+        if(hA) hA.l++;
+        if(hB) hB.w++;
       }
     }
   });
